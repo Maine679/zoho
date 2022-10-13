@@ -14,8 +14,6 @@ class ZohoAuthenticationService extends ZohoApiService
     public function generateZohoTokensData(string $url, string $code)
     {
         $params = [
-//            'client_id'  => config('zoho.client_id'),
-//            'client_secret'  => config('zoho.secret_code'),
             'grant_type'   => 'authorization_code',
             'code'          => $code,
             'redirect_uri'  => config('zoho.api_return_auth_url'),

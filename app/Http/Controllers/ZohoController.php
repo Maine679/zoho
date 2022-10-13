@@ -26,4 +26,13 @@ class ZohoController extends Controller
 
         dd('auth',$authenticationData);
     }
+
+    public function getDataUsers() {
+//        array:4 [▼
+//          "access_token" => "1000.6f43e41fd7d8192c0390d82a3d2f790a.cd1b94e177b1fec4b54a298ce1020492"
+//          "api_domain" => "https://www.zohoapis.eu"
+//          "token_type" => "Bearer"
+//          "expires_in" => 3600
+//        ]
+    }
 }
