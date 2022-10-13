@@ -3,16 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Services\ZohoApi\ZohoAuthenticationService;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\View\View;
 
 class HomeController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Show the application dashboard.
      *
-     * @return Factory|View
-     *
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
@@ -27,6 +34,6 @@ class HomeController extends Controller
             "&redirect_uri=" .$dataForRoute['api_return_auth_url'];
 
 
-        return view('welcome', compact('zohoRequest'));
+        return view('home', compact('zohoRequest'));
     }
 }
