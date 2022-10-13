@@ -21,7 +21,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function welcome()
     {
         $zohoAuthenticationService = new ZohoAuthenticationService();
         $dataForRoute = $zohoAuthenticationService->getDataForRoute();
@@ -34,6 +34,16 @@ class HomeController extends Controller
             "&redirect_uri=" .$dataForRoute['api_return_auth_url'];
 
 
-        return view('home', compact('zohoRequest'));
+        return view('welcome', compact('zohoRequest'));
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
+        return view('home');
     }
 }
