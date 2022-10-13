@@ -50,6 +50,7 @@ class ZohoApiService
      * @param float $timeout
      *
      * @return GuzzleResponse|null
+     * @throws \Exception
      */
     private function send($method, $url, $params = [], $headers = [])
     {
@@ -59,8 +60,7 @@ class ZohoApiService
             /** @var GuzzleHttp\Psr7\Response $result */
             $result = $client->$method($url, $params);
         } catch (Throwable $error) {
-            //TODO Need get data and fix it
-            //return response(null, Response::HTTP_SERVICE_UNAVAILABLE);
+            throw new \Exception('Something went wrong.');
         }
 
         return $result;

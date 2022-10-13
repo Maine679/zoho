@@ -21,23 +21,9 @@ class ZohoAuthenticationService extends ZohoApiService
             'redirect_uri'  => config('zoho.api_return_auth_url'),
         ];
 
-        $data = $this->sendAuthentication($url . config('zoho.api_part_url'), $params);
-
-        return $this->getAuthenticationBody($data);
+        return $this->sendAuthentication($url . config('zoho.api_part_url'), $params);
     }
 
-    /**
-     * Get authentication body
-     *
-     * @param $response
-     *
-     * @return array|null
-     */
-    protected function getAuthenticationBody($data)
-    {
-        //TODO Need get correct data and fix in this function
-        return $data;
-    }
 
     /**
      * Get data from config

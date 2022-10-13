@@ -21,11 +21,9 @@ class ZohoController extends Controller
         if (!$request->get('code') || !$request->get('accounts-server') || $request->get('error'))
             return redirect()->intended('');
 
-
-
         $zohoAuthenticationService = new ZohoAuthenticationService();
         $authenticationData = $zohoAuthenticationService->generateZohoTokensData($request->get('accounts-server'), $request->get('code'));
 
-        dd($authenticationData);
+        dd('auth',$authenticationData);
     }
 }
