@@ -23,18 +23,7 @@ class HomeController extends Controller
      */
     public function welcome()
     {
-        $zohoAuthenticationService = new ZohoAuthenticationService();
-        $dataForRoute = $zohoAuthenticationService->getDataForRoute();
-
-        $zohoRequest = $dataForRoute['api_base_url'] .
-            "?scope=" .$dataForRoute['scope'] .
-            "&client_id=" .$dataForRoute['client_id'] .
-            "&response_type=" .$dataForRoute['response_type'] .
-            "&access_type=" .$dataForRoute['access_type'] .
-            "&redirect_uri=" .$dataForRoute['api_return_auth_url'];
-
-
-        return view('welcome', compact('zohoRequest'));
+        return view('welcome');
     }
 
     /**
@@ -44,6 +33,25 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = request()->user();
+        $zohoData = [];
+        $zohoAuthenticationService = new ZohoAuthenticationService();
+
+        if(!optional($user->zohoAccess)->id) {
+            $dataForRoute = $zohoAuthenticationService->getDataForRoute();
+
+            $zohoData['requestAuth'] = $dataForRoute['api_base_url'] .
+                "?scope=" . $dataForRoute['scope'] .
+                "&client_id=" . $dataForRoute['client_id'] .
+                "&response_type=" . $dataForRoute['response_type'] .
+                "&access_type=" . $dataForRoute['access_type'] .
+                "&redirect_uri=" . $dataForRoute['api_return_auth_url'];
+        } else {
+            $zohoData['indexContract'] = true;
+            $zohoData['createContract'] = true;
+            $zohoData['createDeals'] = true;
+        }
+
+        return view('home', compact('zohoData'));
     }
 }

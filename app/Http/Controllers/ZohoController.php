@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\ZohoAccess;
 use App\Services\ZohoApi\ZohoAuthenticationService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -24,7 +25,22 @@ class ZohoController extends Controller
         $zohoAuthenticationService = new ZohoAuthenticationService();
         $authenticationData = $zohoAuthenticationService->generateZohoTokensData($request->get('accounts-server'), $request->get('code'));
 
-        dd('auth',$authenticationData);
+        $user = $request->user();
+        if(($authenticationData['access_token'] ?? false) && ($authenticationData['api_domain'] ?? false)) {
+
+            ZohoAccess::updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                ],
+                [
+                    'access_token' => $authenticationData['access_token'],
+                    'access_token_at' => time() + ($authenticationData['expires_in'] ?? null),
+                    'refresh_token' => $authenticationData['refresh_token'] ?? null,
+                    'api_domain' => $authenticationData['api_domain'],
+                ]
+            );
+        }
+        return redirect()->intended('home');
     }
 
     public function getDataUsers() {
