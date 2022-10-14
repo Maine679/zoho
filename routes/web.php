@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContractsController;
+use App\Http\Controllers\DealsController;
+use App\Http\Controllers\ZohoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +18,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('/', [ HomeController::class, 'welcome']);
+Route::get('/zoho/auth', [ ZohoController::class, 'auth'])->middleware('auth');
+
+Route::group(['prefix' => 'contract', 'as' => 'contract.'], function () {
+    Route::get('create', [ ContractsController::class, 'create'])
+        ->name('create')->middleware('auth');
+    Route::get('index', [ ContractsController::class, 'index'])
+        ->name('index')->middleware('auth');
 });
+
+Route::group(['prefix' => 'deals', 'as' => 'deals.'], function () {
+    Route::get('create', [ DealsController::class, 'create'])
+        ->name('create')->middleware('auth');
+});
+
 
 Auth::routes();
 

@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ZohoAccess extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +16,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'user_id',
+        'access_token',
+        'refresh_token',
+        'access_token_at',
+        'api_domain',
     ];
 
     /**
@@ -29,8 +29,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
     ];
 
     /**
@@ -39,11 +37,12 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'access_token_at' => 'datetime',
     ];
 
-    public function zohoAccess()
+
+    public function user()
     {
-        return $this->hasOne(ZohoAccess::class);
+        return $this->belongsTo(User::class);
     }
 }
